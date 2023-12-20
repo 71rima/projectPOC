@@ -1,3 +1,4 @@
+/*
 resource "aws_s3_bucket" "bucket" {
     bucket = "tfstatestorage-projectpoc"
     object_lock_enabled = true 
@@ -37,7 +38,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "mySSEconfig" {
     }
   }
 }
-
+*/
 /*
 resource "aws_s3_bucket_acl" "mybucketacl" {
   bucket = aws_s3_bucket.aws_s3_bucket.bucket.bucket
