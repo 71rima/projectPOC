@@ -30,7 +30,6 @@ resource "aws_lb_listener" "listener_http_to_https" {
   }
 }
 resource "aws_lb_listener" "myalb_listener" {
-  depends_on = [aws_lb_listener_certificate.example  ]
   load_balancer_arn = aws_alb.myalb.arn
   port              = "443"
   protocol          = "HTTPS"

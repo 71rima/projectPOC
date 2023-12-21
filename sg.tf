@@ -43,7 +43,7 @@ resource "aws_security_group" "nginx_sg" {
     protocol    = "tcp"
     description = "HTTP"
     cidr_blocks = ["0.0.0.0/0"]
-   } #todo: port schliessen da https?
+   } 
   ingress {
     from_port   = 22
     to_port     = 22
@@ -51,13 +51,13 @@ resource "aws_security_group" "nginx_sg" {
     description = "HTTP"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  ingress {
+  /*ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     description = "HTTPS"
     cidr_blocks = ["0.0.0.0/0"]
-  }
+  }*/ #intern wird http verwendet deswegen muss https nicht offen sein
   egress {
     from_port        = 0
     to_port          = 0
