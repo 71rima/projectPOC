@@ -1,36 +1,187 @@
-/*module "cluster" {
+module "cluster" {
   source  = "terraform-aws-modules/rds-aurora/aws"
 
   name           = "aurora-db-mysql"
   engine         = "aurora-mysql"
-  engine_version = "14.5"
-  instance_class = "db.r6g.large"
+  engine_version = "8.0.mysql_aurora.3.02.0"
+  master_username = "root"
+  auto_minor_version_upgrade = true #
+
   instances = {
-    one = {}
+    1 = {
+      instance_class      = "db.t2.small" #db.r5.large
+      publicly_accessible = true
+    }
     2 = {
-      instance_class = "db.r6g.2xlarge"
+      identifier     = "mysql-static-1"
+      instance_class = "db.t2.small" #db.r5.2xlarge
+    }
+    3 = {
+      identifier     = "mysql-excluded-1"
+      instance_class = "db.t2.small" #db.r5.xlarge
+      promotion_tier = 15
     }
   }
 
-  vpc_id               = "vpc-12345678"
-  db_subnet_group_name = "db-subnet-group"
+  vpc_id               = module.vpc.vpc_id
+  db_subnet_group_name = module.vpc.database_subnet_group_name
   security_group_rules = {
-    ex1_ingress = {
-      cidr_blocks = ["10.20.0.0/20"]
+    vpc_ingress = {
+      cidr_blocks = module.vpc.private_subnets_cidr_blocks
     }
-    ex1_ingress = {
-      source_security_group_id = "sg-12345678"
+    kms_vpc_endpoint = {
+      type                     = "egress"
+      from_port                = 443
+      to_port                  = 443
+      source_security_group_id = module.vpc_endpoints.security_group_id #
     }
   }
-
-  storage_encrypted   = true
+  
   apply_immediately   = true
-  monitoring_interval = 10
+  skip_final_snapshot = true
+  create_db_cluster_parameter_group      = true
+  db_cluster_parameter_group_name        = "aurora"
+  db_cluster_parameter_group_family      = "aurora-mysql8.0"
+  db_cluster_parameter_group_description = "aurora example cluster parameter group"
+  db_cluster_parameter_group_parameters = [
+    {
+      name         = "connect_timeout"
+      value        = 120
+      apply_method = "immediate"
+      }, {
+      name         = "innodb_lock_wait_timeout"
+      value        = 300
+      apply_method = "immediate"
+      }, {
+      name         = "log_output"
+      value        = "FILE"
+      apply_method = "immediate"
+      }, {
+      name         = "max_allowed_packet"
+      value        = "67108864"
+      apply_method = "immediate"
+      }, {
+      name         = "aurora_parallel_query"
+      value        = "OFF"
+      apply_method = "pending-reboot"
+      }, {
+      name         = "binlog_format"
+      value        = "ROW"
+      apply_method = "pending-reboot"
+      }, {
+      name         = "log_bin_trust_function_creators"
+      value        = 1
+      apply_method = "immediate"
+      }, {
+      name         = "require_secure_transport"
+      value        = "ON"
+      apply_method = "immediate"
+      }, {
+      name         = "tls_version"
+      value        = "TLSv1.2"
+      apply_method = "pending-reboot"
+    }
+  ]
 
-  enabled_cloudwatch_logs_exports = ["postgresql"]
+  create_db_parameter_group      = true
+  db_parameter_group_name        = "aurora"
+  db_parameter_group_family      = "aurora-mysql8.0"
+  db_parameter_group_description = "aurora example DB parameter group"
+  db_parameter_group_parameters = [
+    {
+      name         = "connect_timeout"
+      value        = 60
+      apply_method = "immediate"
+      }, {
+      name         = "general_log"
+      value        = 0
+      apply_method = "immediate"
+      }, {
+      name         = "innodb_lock_wait_timeout"
+      value        = 300
+      apply_method = "immediate"
+      }, {
+      name         = "log_output"
+      value        = "FILE"
+      apply_method = "pending-reboot"
+      }, {
+      name         = "long_query_time"
+      value        = 5
+      apply_method = "immediate"
+      }, {
+      name         = "max_connections"
+      value        = 2000
+      apply_method = "immediate"
+      }, {
+      name         = "slow_query_log"
+      value        = 1
+      apply_method = "immediate"
+      }, {
+      name         = "log_bin_trust_function_creators"
+      value        = 1
+      apply_method = "immediate"
+    }
+  ]
+  backup_retention_period = 7
+  enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
+  
+  create_db_cluster_activity_stream     = true
+  db_cluster_activity_stream_kms_key_id = module.kms.key_id
+
+  # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/DBActivityStreams.Overview.html#DBActivityStreams.Overview.sync-mode
+  db_cluster_activity_stream_mode = "async"
+  tags = {
+    Environment = "dev"
+    Terraform   = "true"
+  }
+}
+
+##########supporting resources beside vpc.tf # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/DBActivityStreams.Prereqs.html#DBActivityStreams.Prereqs.KMS
+
+module "kms" {
+  source  = "terraform-aws-modules/kms/aws"
+  version = "~> 2.0"
+
+  deletion_window_in_days = 7
+  description             = "KMS key for Aurora cluster activity stream."
+  enable_key_rotation     = true
+  is_enabled              = true
+  key_usage               = "ENCRYPT_DECRYPT"
+
+  aliases = ["aurora"]
 
   tags = {
     Environment = "dev"
     Terraform   = "true"
   }
-}*/
+}
+
+module "vpc_endpoints" {
+  source  = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
+  version = "~> 5.0"
+
+  vpc_id = module.vpc.vpc_id
+
+  create_security_group      = true
+  security_group_name_prefix = "aurora-vpc-endpoints-"
+  security_group_description = "VPC endpoint security group"
+  security_group_rules = {
+    ingress_https = {
+      description = "HTTPS from VPC"
+      cidr_blocks = [module.vpc.vpc_cidr_block]
+    }
+  }
+
+  endpoints = {
+    kms = {
+      service             = "kms"
+      private_dns_enabled = true
+      subnet_ids          = module.vpc.database_subnets
+    }
+  }
+
+  tags = {
+    Environment = "dev"
+    Terraform   = "true"
+  }
+}
