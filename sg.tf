@@ -10,6 +10,13 @@ ingress {
     description = "HTTP"
     cidr_blocks = ["0.0.0.0/0"]
   }
+ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    description = "HTTPS"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 egress {
     from_port        = 0
     to_port          = 0
@@ -36,12 +43,19 @@ resource "aws_security_group" "nginx_sg" {
     protocol    = "tcp"
     description = "HTTP"
     cidr_blocks = ["0.0.0.0/0"]
-   }
+   } #todo: port schliessen da https?
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     description = "HTTP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    description = "HTTPS"
     cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
