@@ -1,13 +1,13 @@
-resource "aws_autoscaling_group" "myasg" {
+resource "aws_autoscaling_group" "this" {
   desired_capacity  = 2
   max_size          = 3
   min_size          = 1
-  depends_on        = [aws_alb.myalb]
-  target_group_arns = ["${aws_lb_target_group.mytg.arn}"]
+  depends_on        = [aws_alb.this]
+  target_group_arns = ["${aws_lb_target_group.this.arn}"]
   health_check_type = "EC2"
   launch_template {
-    id      = aws_launch_template.mylaunchtemplate.id
-    version = aws_launch_template.mylaunchtemplate.latest_version
+    id      = aws_launch_template.this.id
+    version = aws_launch_template.this.latest_version
   }
 
 
@@ -17,8 +17,8 @@ resource "aws_autoscaling_group" "myasg" {
 }
 
 #target group für ALB/ASG
-resource "aws_lb_target_group" "mytg" {
-  name       = "mytgnginx"
+resource "aws_lb_target_group" "this" {
+  name       = "thisnginx"
   depends_on = [module.vpc]
   port       = 80
   protocol   = "HTTP"

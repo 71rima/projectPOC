@@ -1,5 +1,5 @@
 # security group for ALB
-resource "aws_security_group" "elb_sg" {
+resource "aws_security_group" "elb" {
   name        = "sg_alb"
   description = "Security group for ALB"
   vpc_id      = module.vpc.vpc_id
@@ -28,12 +28,11 @@ resource "aws_security_group" "elb_sg" {
   tags = {
     Terraform   = "true"
     Environment = "dev"
-    Name        = "mysg_alb"
   }
 }
 
 # security group for webserver
-resource "aws_security_group" "nginx_sg" {
+resource "aws_security_group" "nginx" {
   name        = "sg_nginx"
   description = "Security Group for Nginx Webserver"
   vpc_id      = module.vpc.vpc_id
@@ -68,6 +67,6 @@ resource "aws_security_group" "nginx_sg" {
   tags = {
     Terraform   = "true"
     Environment = "dev"
-    Name        = "mysg_nginx"
+    Name        = "sg_nginx"
   }
 }
