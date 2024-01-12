@@ -130,10 +130,7 @@ module "cluster" {
 
   # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/DBActivityStreams.Overview.html#DBActivityStreams.Overview.sync-mode
   db_cluster_activity_stream_mode = "async"
-  tags = {
-    Environment = "dev"
-    Terraform   = "true"
-  }
+
 }
 
 ##########supporting resources beside vpc.tf # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/DBActivityStreams.Prereqs.html#DBActivityStreams.Prereqs.KMS
@@ -150,10 +147,6 @@ module "kms" {
 
   aliases = ["aurora"]
 
-  tags = {
-    Environment = "dev"
-    Terraform   = "true"
-  }
 }
 
 module "vpc_endpoints" {
@@ -180,8 +173,4 @@ module "vpc_endpoints" {
     }
   }
 
-  tags = {
-    Environment = "dev"
-    Terraform   = "true"
-  }
 }

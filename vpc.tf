@@ -11,7 +11,7 @@ terraform {
 
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
-  name   = "my-vpc-projectPOC"
+  name   = "vpc-projectPOC"
   cidr   = local.vpc_cidr
 
   azs              = ["us-east-1a", "us-east-1b"]
@@ -21,12 +21,6 @@ module "vpc" {
 
   enable_nat_gateway = true
   #one_nat_gateway_per_az = true
-
-
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-    Name        = "vpc"
-  }
 }
+
 

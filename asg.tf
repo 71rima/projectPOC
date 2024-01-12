@@ -18,7 +18,7 @@ resource "aws_autoscaling_group" "this" {
 
 #target group für ALB/ASG
 resource "aws_lb_target_group" "this" {
-  name       = "thisnginx"
+
   depends_on = [module.vpc]
   port       = 80
   protocol   = "HTTP"

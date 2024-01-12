@@ -12,4 +12,12 @@ provider "aws" {
   region                   = local.region
   shared_config_files      = ["/Users/amirel-shennawy/.aws/config"]
   shared_credentials_files = ["/Users/amirel-shennawy/.aws/credentials"]
+  default_tags {
+    tags = {
+      owner       = "TecRacer"
+      project     = "ProjectPOC"
+      Environment = "Dev"
+      Terraform   = true
+    }
+  }
 }
