@@ -1,35 +1,35 @@
 # security group for ALB
-resource "aws_security_group" "elb_sg" {   
+resource "aws_security_group" "elb_sg" {
   name        = "sg_alb"
   description = "Security group for ALB"
   vpc_id      = module.vpc.vpc_id
-ingress {
+  ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     description = "HTTP"
     cidr_blocks = ["0.0.0.0/0"]
   }
-ingress {
+  ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     description = "HTTPS"
     cidr_blocks = ["0.0.0.0/0"]
   }
-egress {
+  egress {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
- 
- tags = {
-    Terraform = "true"
+
+  tags = {
+    Terraform   = "true"
     Environment = "dev"
-    Name = "mysg_alb"
-  } 
+    Name        = "mysg_alb"
+  }
 }
 
 # security group for webserver
@@ -43,7 +43,7 @@ resource "aws_security_group" "nginx_sg" {
     protocol    = "tcp"
     description = "HTTP"
     cidr_blocks = ["0.0.0.0/0"]
-   } 
+  }
   ingress {
     from_port   = 22
     to_port     = 22
@@ -66,8 +66,8 @@ resource "aws_security_group" "nginx_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
   tags = {
-    Terraform = "true"
+    Terraform   = "true"
     Environment = "dev"
-    Name = "mysg_nginx"
+    Name        = "mysg_nginx"
   }
 }

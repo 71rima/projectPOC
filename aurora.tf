@@ -1,10 +1,10 @@
 module "cluster" {
-  source  = "terraform-aws-modules/rds-aurora/aws"
+  source = "terraform-aws-modules/rds-aurora/aws"
 
-  name           = "aurora-db-mysql"
-  engine         = "aurora-mysql"
-  engine_version = "8.0.mysql_aurora.3.02.0"
-  master_username = "root"
+  name                       = "aurora-db-mysql"
+  engine                     = "aurora-mysql"
+  engine_version             = "8.0.mysql_aurora.3.02.0"
+  master_username            = "root"
   auto_minor_version_upgrade = true #
 
   instances = {
@@ -36,9 +36,9 @@ module "cluster" {
       source_security_group_id = module.vpc_endpoints.security_group_id #
     }
   }
-  
-  apply_immediately   = true
-  skip_final_snapshot = true
+
+  apply_immediately                      = true
+  skip_final_snapshot                    = true
   create_db_cluster_parameter_group      = true
   db_cluster_parameter_group_name        = "aurora"
   db_cluster_parameter_group_family      = "aurora-mysql8.0"
@@ -122,9 +122,9 @@ module "cluster" {
       apply_method = "immediate"
     }
   ]
-  backup_retention_period = 7
+  backup_retention_period         = 7
   enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
-  
+
   create_db_cluster_activity_stream     = true
   db_cluster_activity_stream_kms_key_id = module.kms.key_id
 

@@ -4,13 +4,13 @@ resource "aws_alb" "myalb" {
   load_balancer_type = "application"
 
   subnets         = module.vpc.public_subnets
-  security_groups = ["${aws_security_group.elb_sg.id}"]#[aws_security_group.elb_sg.id]
+  security_groups = ["${aws_security_group.elb_sg.id}"] #[aws_security_group.elb_sg.id]
 
-  tags =  {
-     name = "myalb"
-     Terraform = true
-    }
-  
+  tags = {
+    name      = "myalb"
+    Terraform = true
+  }
+
 }
 
 # ALB listener
@@ -18,7 +18,7 @@ resource "aws_lb_listener" "listener_http_to_https" {
   load_balancer_arn = aws_alb.myalb.arn
   port              = "80"
   protocol          = "HTTP"
-  
+
   default_action {
     type = "redirect"
 
