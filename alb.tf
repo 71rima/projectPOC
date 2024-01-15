@@ -6,7 +6,7 @@ resource "aws_alb" "this" {
   subnets         = module.vpc.public_subnets
   security_groups = [aws_security_group.elb.id]
   #checkov
-  enable_deletion_protection = true
+  #enable_deletion_protection = true
   access_logs {
     bucket  = aws_s3_bucket.alblogs.id
     prefix  = "alb-alogs"

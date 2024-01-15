@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.5"
+  required_version = ">= 1.4"
   backend "s3" {
     bucket         = "tfstatestorage-projectpoc"
     key            = "terraform.tfstate"

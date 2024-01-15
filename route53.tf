@@ -1,3 +1,4 @@
+/*
 resource "aws_route53_record" "alias_records" {
   for_each = var.aliases
 
@@ -10,10 +11,10 @@ resource "aws_route53_record" "alias_records" {
     zone_id                = aws_alb.this.zone_id
     evaluate_target_health = true
   }
-}/*
+}*/
 resource "aws_route53_record" "alias_domain" {
-  
-  zone_id = aws_alb.this.zone_id
+
+  zone_id = data.aws_route53_zone.this.zone_id
   name    = "elshennawy.de"
   type    = "A"
 
@@ -25,7 +26,7 @@ resource "aws_route53_record" "alias_domain" {
 }
 resource "aws_route53_record" "alias_subdomain" {
 
-  zone_id = aws_alb.this.zone_id
+  zone_id = data.aws_route53_zone.this.zone_id
   name    = "web.elshennawy.de"
   type    = "A"
 
@@ -34,5 +35,5 @@ resource "aws_route53_record" "alias_subdomain" {
     zone_id                = aws_alb.this.zone_id
     evaluate_target_health = true
   }
-}*/
+}
 
