@@ -1,11 +1,10 @@
 locals {
-  terraform-git-repo = "projectPOC"
+  #terraform-git-repo = "projectPOC"
   region             = "us-east-1"
-
   vpc_cidr = "10.0.0.0/16"
 
-  terraform-base-path = replace(path.cwd,
-  "/^.*?(${local.terraform-git-repo}\\/)/", "$1")
+  #terraform-base-path = replace(path.cwd,
+  #"/^.*?(${local.terraform-git-repo}\\/)/", "$1")
 
 }
 /*terraform {

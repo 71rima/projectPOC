@@ -4,7 +4,7 @@ resource "aws_alb" "this" {
   load_balancer_type = "application"
 
   subnets         = module.vpc.public_subnets
-  security_groups = ["${aws_security_group.elb.id}"]
+  security_groups = [aws_security_group.elb.id]
   #checkov
   enable_deletion_protection = true
   access_logs {

@@ -136,7 +136,7 @@ module "cluster" {
 ##########supporting resources beside vpc.tf # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/DBActivityStreams.Prereqs.html#DBActivityStreams.Prereqs.KMS
 
 module "kms" {
-  source  = "git::https://github.com/terraform-aws-modules/terraform-aws-kms.git?ref=5508c9cdd6fdb0ed4dcf399f54ba02fb8c31bd4b" 
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-kms.git?ref=5508c9cdd6fdb0ed4dcf399f54ba02fb8c31bd4b"
   # version = "~> 2.0" only applies
 
   deletion_window_in_days = 7

@@ -1,11 +1,11 @@
 # route53.tf
-aliases = {    
+aliases = {
   "alias1" = "elshennawy.de"
   "alias2" = "web.elshennawy.de"
 }
 
 # Launch_template.tf
-linux_image_id = "ami-079db87dc4c10ac91"
+#linux_image_id = "ami-079db87dc4c10ac91" in _data.tf
 instance_type = "t2.micro"
 
 # alb.tf

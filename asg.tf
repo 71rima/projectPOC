@@ -3,7 +3,7 @@ resource "aws_autoscaling_group" "this" {
   max_size          = 3
   min_size          = 1
   depends_on        = [aws_alb.this]
-  target_group_arns = ["${aws_lb_target_group.this.arn}"]
+  target_group_arns = [aws_lb_target_group.this.arn]
   health_check_type = "EC2"
   launch_template {
     id      = aws_launch_template.this.id
