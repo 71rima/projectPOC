@@ -1,3 +1,4 @@
+/*
 resource "aws_s3_bucket" "this" {
   bucket              = "tfstatestorage-projectpoc"
   object_lock_enabled = true
@@ -44,9 +45,33 @@ resource "aws_s3_bucket_acl" "this" {
   bucket = aws_s3_bucket.this.bucket
   acl    = "private"
 }
-
+*/
 #accesslogs
 resource "aws_s3_bucket" "alblogs" {
   bucket = "alb-alogs-projectpoc"
 }
 
+resource "aws_s3_bucket_policy" "lb_logs" {
+  bucket = aws_s3_bucket.alblogs.id
+  policy = data.aws_iam_policy_document.lb_logs.json
+}
+
+data "aws_iam_policy_document" "lb_logs" {
+  statement {
+    principals {
+      type        = "Service"
+      identifiers = ["logdelivery.elb.amazonaws.com"]
+    }
+
+    actions   = ["s3:PutObject"]
+    resources = ["${aws_s3_bucket.alblogs.arn}/*"]
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-acl"
+
+      values = [
+        "bucket-owner-full-control"
+      ]
+    }
+  }
+}
