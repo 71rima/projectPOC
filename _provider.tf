@@ -1,6 +1,11 @@
 terraform {
   required_version = ">= 1.5"
-
+  backend "s3" {
+    bucket         = "tfstatestorage-projectpoc"
+    key            = "terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform_state"
+  }
   required_providers {
     aws = {
       source  = "hashicorp/aws"
