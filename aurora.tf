@@ -1,5 +1,5 @@
 module "cluster" {
-  source = "terraform-aws-modules/rds-aurora/aws"
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-rds-aurora.git?ref=c9e4933177c6d972dca6c45be0178dc2928e42b1" #source with commit hash to prevent supply chain attack risk
 
   name                       = "aurora-db-mysql"
   engine                     = "aurora-mysql"
@@ -136,8 +136,8 @@ module "cluster" {
 ##########supporting resources beside vpc.tf # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/DBActivityStreams.Prereqs.html#DBActivityStreams.Prereqs.KMS
 
 module "kms" {
-  source  = "terraform-aws-modules/kms/aws"
-  version = "~> 2.0"
+  source  = "git::https://github.com/terraform-aws-modules/terraform-aws-kms.git?ref=5508c9cdd6fdb0ed4dcf399f54ba02fb8c31bd4b" 
+  # version = "~> 2.0" only applies
 
   deletion_window_in_days = 7
   description             = "KMS key for Aurora cluster activity stream."
