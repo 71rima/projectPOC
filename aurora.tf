@@ -1,3 +1,4 @@
+/*
 module "cluster" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-rds-aurora.git?ref=c9e4933177c6d972dca6c45be0178dc2928e42b1" #source with commit hash to prevent supply chain attack risk
 
@@ -174,3 +175,4 @@ module "vpc_endpoints" {
   }
 
 }
+*/

@@ -1,9 +1,3 @@
-
-
-terraform {
-
-}
-
 module "vpc" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-vpc.git?ref=e4768508a17f79337f9f1e48ebf47ee885b98c1f"
 
@@ -17,7 +11,6 @@ module "vpc" {
   database_subnets = ["10.0.4.0/24", "10.0.5.0/24"]
 
   enable_nat_gateway = true
-  #one_nat_gateway_per_az = true
 }
 
 

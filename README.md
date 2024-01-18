@@ -47,4 +47,10 @@
 
 ## Outputs
 
+## Used Commands
+aws ecs execute-command --cluster ecs-cluster-name \
+    --task task-id \
+    --container container-name \ 
+    --interactive \
+    --command "/bin/sh"
 No outputs.

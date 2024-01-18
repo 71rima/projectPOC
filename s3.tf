@@ -46,6 +46,7 @@ resource "aws_s3_bucket_acl" "this" {
   acl    = "private"
 }
 */
+
 #accesslogs
 resource "aws_s3_bucket" "alblogs" {
   bucket = "alb-alogs-projectpoc"

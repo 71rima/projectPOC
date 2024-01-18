@@ -1,17 +1,18 @@
-/*
+
 resource "aws_route53_record" "alias_records" {
   for_each = var.aliases
 
-  zone_id = aws_alb.this.zone_id # aws_route53_zone.zone["zwei"].zone_id
-  name    = each.key
+  zone_id = data.aws_route53_zone.this.zone_id
+  name    = each.value
   type    = "A"
 
   alias {
-    name                   = each.value
+    name                   = aws_alb.this.dns_name
     zone_id                = aws_alb.this.zone_id
     evaluate_target_health = true
   }
-}*/
+}
+/*
 resource "aws_route53_record" "alias_domain" {
 
   zone_id = data.aws_route53_zone.this.zone_id
@@ -35,5 +36,5 @@ resource "aws_route53_record" "alias_subdomain" {
     zone_id                = aws_alb.this.zone_id
     evaluate_target_health = true
   }
-}
+}*/
 
