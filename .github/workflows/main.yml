@@ -2,7 +2,7 @@ name: Terraform GitHub Actions
 
 on: 
   push:
-    branches: [main]
+    branches: [ecs]
 
 jobs:
   Build:
