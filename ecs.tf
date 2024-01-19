@@ -113,7 +113,7 @@ resource "aws_iam_role_policy_attachment" "ecs-ssm-role-policy-attach" {
   role       = aws_iam_role.ecs_task_role.id
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
-resource "aws_ecs_service" "main" {
+resource "aws_ecs_service" "this" {
   name                               = "fargate-service"
   cluster                            = aws_ecs_cluster.this.id
   task_definition                    = aws_ecs_task_definition.this.arn
@@ -136,7 +136,7 @@ resource "aws_ecs_service" "main" {
   }
 
   lifecycle {
-    ignore_changes = [desired_count]
+    ignore_changes = [task_definition, desired_count]
   }
 }
 

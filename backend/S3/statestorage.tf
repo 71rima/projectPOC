@@ -1,4 +1,3 @@
-/*
 resource "aws_s3_bucket" "this" {
   bucket              = "tfstatestorage-projectpoc"
   object_lock_enabled = true
@@ -44,26 +43,4 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
 resource "aws_s3_bucket_acl" "this" {
   bucket = aws_s3_bucket.this.bucket
   acl    = "private"
-}
-*/
-
-#accesslogs
-resource "aws_s3_bucket" "alblogs" {
-  bucket = "alb-alogs-projectpoc"
-}
-resource "aws_s3_bucket_policy" "lb_logs" {
-  bucket = aws_s3_bucket.alblogs.id
-  policy = data.aws_iam_policy_document.lb_logs.json
-}
-data "aws_elb_service_account" "lb" {}
-data "aws_iam_policy_document" "lb_logs" {
-  statement {
-    principals {
-      type        = "AWS"
-      identifiers = [data.aws_elb_service_account.lb.arn]
-    }
-
-    actions   = ["s3:PutObject"]
-    resources = ["${aws_s3_bucket.alblogs.arn}/*"]
-  }
 }

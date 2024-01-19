@@ -1,5 +1,5 @@
 # security group for ALB
-resource "aws_security_group" "elb" {
+resource "aws_security_group" "alb" {
 
   name        = "sg_alb"
   description = "Security group for ALB"
