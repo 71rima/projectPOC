@@ -139,7 +139,11 @@ resource "aws_ecs_service" "this" {
     ignore_changes = [task_definition, desired_count]
   }
 }
-
+#remove from here
+resource "aws_s3_bucket_policy" "lb_logs" {
+  bucket = data.aws_s3_bucket.alblogs.id
+  policy = data.aws_iam_policy_document.lb_logs.json
+}
 #toDo: 1. Container Image erstellen mit cUrl, jq und sed --> 2. in ECR/DockerHub/... hochladen --> 3. Img anpassen 
 /*
 #ecr for container image

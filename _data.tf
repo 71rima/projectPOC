@@ -11,7 +11,7 @@ data "aws_s3_bucket" "this" {
 data "aws_s3_bucket" "alblogs" {
   bucket = "alb-alogs-projectpoc"
 }
-/*data "aws_elb_service_account" "lb" {}
+data "aws_elb_service_account" "lb" {}
 data "aws_iam_policy_document" "lb_logs" {
   statement {
     principals {
@@ -22,4 +22,4 @@ data "aws_iam_policy_document" "lb_logs" {
     actions   = ["s3:PutObject"]
     resources = ["${data.aws_s3_bucket.alblogs.arn}/*"]
   }
-}*/
+}
