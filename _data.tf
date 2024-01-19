@@ -1,3 +1,4 @@
+/*
 data "aws_ami" "latest_linux" {
   most_recent = true
   owners      = ["amazon"]
@@ -22,7 +23,29 @@ data "aws_ami" "latest_linux" {
     name   = "root-device-type"
     values = ["ebs"]
   }
-} #find newest ami aws linux
+} */ 
+#find newest ami aws linux
+data "aws_ami" "latest_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "description"
+    values = ["Amazon Linux 2023 AMI*"]
+  }
+}
+data "aws_elb_service_account" "lb" {}
+data "aws_iam_policy_document" "lb_logs" {
+  statement {
+    principals {
+      type        = "AWS"
+      identifiers = [data.aws_elb_service_account.lb.arn]
+    }
+
+    actions   = ["s3:PutObject"]
+    resources = ["${aws_s3_bucket.alblogs.arn}/*"]
+  }
+}
 #find hosted zone id
 data "aws_route53_zone" "this" {
   name         = "elshennawy.de"

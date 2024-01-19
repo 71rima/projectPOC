@@ -15,12 +15,6 @@ resource "aws_alb" "this" {
   drop_invalid_header_fields = true #drop http headers
 }
 
-/* #aws waf for public facing lb
-resource "aws_wafregional_web_acl_association" "this" {
-  resource_arn = aws_alb.this.arn
-  web_acl_id   = aws_wafregional_web_acl.this.id
-}*/
-
 # ALB listener
 resource "aws_lb_listener" "https_redirect" {
   load_balancer_arn = aws_alb.this.arn
